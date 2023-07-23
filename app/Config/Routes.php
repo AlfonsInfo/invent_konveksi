@@ -1,6 +1,6 @@
 <?php
 namespace Config;
-use App\Controllers\Pages;
+use App\Controllers\Home;
 
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes();
@@ -11,7 +11,7 @@ $routes = Services::routes();
  * --------------------------------------------------------------------
  */
 $routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Pages');
+$routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
@@ -19,7 +19,8 @@ $routes->set404Override();
 // where controller filters or CSRF protection are bypassed.
 // If you don't want to define all routes, please use the Auto Routing (Improved).
 // Set `$autoRoutesImproved` to true in `app/Config/Feature.php` and set the following to true.
-// $routes->setAutoRoute(false);
+//* auto routing is very dangerous
+$routes->setAutoRoute(true);
 
 /*
  * --------------------------------------------------------------------
@@ -30,8 +31,20 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
-$routes->get('pages', [Pages::class, 'index']);
-$routes->get('(:segment)', [Pages::class, 'view']);
+
+
+//* testing
+$routes->get('/test1', function(){
+    echo "Test 1";
+});
+
+$routes->get('/test2', function(){
+    echo "Test 2";
+});
+
+// * (:any) -> place holder (:segment), dll.
+$routes->get('test3/(:any)','Home::coba/$1');
+//*Routes : segment1(controllers)/segment2(method)/segment3(params)
 
 /*
  * --------------------------------------------------------------------
