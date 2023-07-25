@@ -9,9 +9,4 @@ class Home extends BaseController
     {
         return view('welcome_message');
     }
-
-    public function coba($params = "Default" ,$umur = 0)
-    {
-        return "Hallo, nama saya " . $params . " umur saya";
-    }
 }

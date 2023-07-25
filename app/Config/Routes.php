@@ -19,8 +19,10 @@ $routes->set404Override();
 // where controller filters or CSRF protection are bypassed.
 // If you don't want to define all routes, please use the Auto Routing (Improved).
 // Set `$autoRoutesImproved` to true in `app/Config/Feature.php` and set the following to true.
-//* auto routing is very dangerous
-$routes->setAutoRoute(true);
+
+
+//*Uncomment for Auto Route
+// $routes->setAutoRoute(true);
 
 /*
  * --------------------------------------------------------------------
@@ -30,23 +32,33 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+
+$routes->get('/', 'Pages::index');
+$routes->get('/login', 'Pages::Login');
+$routes->get('/attributes', 'Attributes::index');
+$routes->get('/dashboard', 'Pages::dashboard');
 
 
-//* testing
-$routes->get('/test1', function(){
-    echo "Test 1";
-});
+//*Profile Views
+$routes->get('/profile', 'Pages::profile');
 
-$routes->get('/test2', function(){
-    echo "Test 2";
-});
 
-// * (:any) -> place holder (:segment), dll.
-$routes->get('test3/(:any)','Home::coba/$1');
-//*Routes : segment1(controllers)/segment2(method)/segment3(params)
+//*User
+$routes->get('/user', 'Pages::user');
 
+
+
+
+
+// *! (:any) -> place holder (:segment), dll.
+//*! Routes : segment1(controllers)/segment2(method)/segment3(params)
+//* Example
+//$routes->get('test3/(:any)','Home::coba/$1');
+//---------------
 /*
+
+
+
  * --------------------------------------------------------------------
  * Additional Routing
  * --------------------------------------------------------------------
