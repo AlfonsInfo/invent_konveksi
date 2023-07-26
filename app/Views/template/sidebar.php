@@ -6,7 +6,7 @@
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">Inventory</span>
     </a>
-
+   
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
@@ -36,7 +36,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-header">MENU</li>
           <li class="nav-item">
-            <a href="user" class="nav-link">
+            <a href="users" class="nav-link <?php if(uri_string() == 'users') echo 'active'?>">
               <i class="nav-icon fas fa-user-alt"></i>
               <p>
                 Users
@@ -45,7 +45,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="attributes" class="nav-link">
+            <a href="attributes" class="nav-link <?php if(uri_string() == 'attributes') echo 'active'?>">
             <i class="nav-icon fas fa-list-ul"></i>
             <!-- <i class="nav-icon far fa-image"></i> -->
               <p>

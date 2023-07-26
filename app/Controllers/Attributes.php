@@ -19,6 +19,7 @@ class Attributes extends BaseController
         $attributes = $this->AttributesModel->findAll();
         $data = [
             'title' => 'Attributes',
+            'pageTitle' => 'Attributes',
             'attributes' => $attributes
         ];
 

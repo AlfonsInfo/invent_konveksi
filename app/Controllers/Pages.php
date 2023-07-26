@@ -45,7 +45,8 @@ class Pages extends BaseController
     public function user()
     {
         $data = [
-            "title" => "Employee | User"
+            "title" => "Employee | User",
+            'pageTitle' => 'Users',
         ];
 
         return view('Users/userPage', $data);

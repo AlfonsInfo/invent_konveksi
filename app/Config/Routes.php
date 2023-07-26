@@ -44,7 +44,7 @@ $routes->get('/profile', 'Pages::profile');
 
 
 //*User
-$routes->get('/user', 'Pages::user');
+$routes->get('/users', 'Pages::user');
 
 
 

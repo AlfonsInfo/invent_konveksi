@@ -7,7 +7,6 @@
 <div class="wrapper">
   <?= $this->include('template/headerNav'); ?>
   <?= $this->include('template/sideBar'); ?>
-
   <?= $this->include('template/header'); ?>
 
     <!-- Main content -->
