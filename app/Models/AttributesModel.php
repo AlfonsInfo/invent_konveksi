@@ -13,7 +13,7 @@ class AttributesModel extends Model
     protected $useTimeStamps = true;
 
     //default : created_at , updated_at
-    // protected $allowedFiels = [];
+    protected $allowedFields = ['nama_attribute'];
     // protected useTimeStamps = []
     
     //*SoftDeletes ?

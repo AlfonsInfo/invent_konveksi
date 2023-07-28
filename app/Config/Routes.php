@@ -35,8 +35,37 @@ $routes->set404Override();
 
 $routes->get('/', 'Pages::index');
 $routes->get('/login', 'Pages::Login');
-$routes->get('/attributes', 'Attributes::index');
 $routes->get('/dashboard', 'Pages::dashboard');
+
+//* Attributes
+$routes->post('/attributes/create', 'Attributes::create'); //*Create
+$routes->get('/attributes', 'Attributes::index'); //*Read
+$routes->post('/attributes/update','Attributes::update'); //*Update
+$routes->delete('/delete/attributes/(:any)', 'Attributes::deleteAttribute/$1'); //*Delete
+
+//* Attributes Details
+$routes->post('/attributedetails/create','AttributeDetails::create'); //* Create
+$routes->get('/attributedetails/(:num)', 'AttributeDetails::index/$1'); //* Read
+$routes->post('/attributedetails/update','AttributeDetails::update'); //*Update
+$routes->delete('/delete/attributedetails/(:any)', 'AttributeDetails::deleteAttribute/$1'); //*Delete
+
+//* Product Category
+$routes->post('/productcategory/create', 'ProductCategory::create'); //*Create
+$routes->get('/productcategory', 'ProductCategory::index'); //*Read
+$routes->post('/productcategory/update', 'ProductCategory::update'); //*Update
+$routes->delete('/delete/productcategory/(:any)', 'ProductCategory::delete/$1'); //*Delete
+
+//* Brands
+$routes->post('/brands/create', 'Brands::create'); //*Create
+$routes->get('/brands', 'Brands::index'); //*Read
+$routes->post('/brands/update', 'Brands::update'); //*Update
+$routes->delete('/delete/brands/(:any)', 'Brands::delete/$1'); //*Delete
+
+//*Products
+$routes->post('/products/create', 'Products::create'); //*Create
+$routes->get('/products', 'Products::index'); //*Read
+$routes->post('/products/update', 'Products::update'); //*Update
+$routes->delete('/delete/products/(:any)', 'Products::delete/$1'); //*Delete
 
 
 //*Profile Views
@@ -74,3 +103,4 @@ $routes->get('/users', 'Pages::user');
 if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
     require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }
+?>

@@ -41,4 +41,11 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     // Rules
     // --------------------------------------------------------------------
+    public $customRules = [
+        'unique_combination' => 'App\Validations\CustomValidation::isUniqueCombination'
+    ];
+    
+
 }
+
+

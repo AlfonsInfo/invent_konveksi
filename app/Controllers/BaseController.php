@@ -28,6 +28,16 @@ abstract class BaseController extends Controller
      */
     protected $request;
 
+
+    protected function showAlert($title, $message, $type = 'success')
+    {
+        $this->response->setHeader('Content-Type', 'application/json');
+        $this->response->setBody(json_encode([
+            'title' => $title,
+            'message' => $message,
+            'type' => $type,
+        ]));
+    }
     /**
      * An array of helpers to be loaded automatically upon
      * class instantiation. These helpers will be available
