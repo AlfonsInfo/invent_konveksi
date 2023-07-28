@@ -23,20 +23,37 @@ class Products extends BaseController
     //* Index Page
     public function index()
     {
-        $products = $this->productsModel->findAll();
+
+        $db = db_connect();
+
+        $query = $db->query("SELECT p.id_product, p.nama_product, p.harga_product, p.deskripsi, p.foto_product, p.stok_total, c.nama_category, b.nama_brand
+                            , ad_warna.nilai as warna , ad_ukuran.nilai as ukuran
+                            FROM products p
+                            LEFT JOIN product_category c ON p.id_category = c.id_category
+                            LEFT JOIN brands b on p.id_brand = b.id_brand
+                            LEFT JOIN attribute_details ad_warna on p.id_details_warna = ad_warna.id_details
+                            LEFT JOIN attribute_details ad_ukuran on p.id_details_ukuran = ad_ukuran.id_details
+                            ");
+
+        $products = $query->getResult();
+        $rupiahFormatter = new \App\Controllers\RupiahFormatter();
+        
+        foreach($products as $p)
+        {
+            $p->foto_product = 'data:image/jpeg;base64,' . base64_encode($p->foto_product);
+            $p->harga_product = $rupiahFormatter->formatRupiah($p->harga_product);
+        }
+
         $data = [
-            'title' => 'Products',
-            'pageTitle' => 'Products',
+            'title' => 'Produk',
+            'pageTitle' => 'Produk',
             'products' => $products,
             'validation' => \config\Services::validation()
         ];
 
-        //*Debugging
-        // dd($data); 
-        //*Akhir Dari Debugging
-    
-         return view('Products/ProductCategoryPage.php', $data );
+        return view('Products/ProductsPage.php', $data );
     }
+
 
 
         //*Create Page
