@@ -35,8 +35,13 @@ $routes->set404Override();
 
 $routes->get('/', 'Pages::index');
 $routes->get('/login', 'Pages::Login');
-$routes->get('/dashboard', 'Pages::dashboard');
+$routes->get('/dashboard', 'Pages::dashboard',);
 
+//* Users
+$routes->get('/users/register','Register::index');
+$routes->post('/users/save','Register::save');
+
+// ['filter' => 'auth']
 //* Attributes
 $routes->post('/attributes/create', 'Attributes::create'); //*Create
 $routes->get('/attributes', 'Attributes::index'); //*Read
