@@ -30,7 +30,8 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <button data-toggle="modal" data-target="#createModal" class="btn btn-success mb-3" data-whatever="@test">Tambah Produk Baru</button>
+                <a href="/products/createpage" class="btn btn-primary">Tambah Produk Baru</a>
+                <!-- <button data-toggle="modal" data-target="#createModal" class="btn btn-success mb-3" data-whatever="@test">Tambah Produk Baru</button> -->
                 <table id="example2" class="table table-bordered table-striped">
                   <thead>
                   <tr>
@@ -38,6 +39,8 @@
                     <th>Nama Produk</th>
                     <th>Kategori</th>
                     <th>Brand</th>
+                    <th>Warna</th>
+                    <th>Ukuran</th>
                     <th>Foto Produk</th>
                     <th>Harga Produk</th>
                     <th>Stok Total</th>
@@ -52,6 +55,8 @@
                         <td><?= $att->nama_product; ?></td>
                         <td><?= $att->nama_category; ?></td>
                         <td><?= $att->nama_brand; ?></td>
+                        <td><?= $att->warna; ?></td>
+                        <td><?= $att->ukuran; ?></td>
                         <td>
                             <img src="<?= $att->foto_product ?>" width="200px" alt="<?= $att->nama_product ?>">                        
                         </td>
@@ -69,8 +74,9 @@
                         </td>
                         <td>
                             <div>
-                                <!-- <button>Hapus</button> -->
-                              </div>
+                            <a href="products/editpage/<?= $att->id_product;?>"   class="btn btn-warning  edit-btn active " role="button"   >Edit</a>
+                            <button class="btn btn-danger active delete-btn"data-product-id="<?= $att->id_product;?>" role="button" aria-pressed="true"  data-attribute-nama="<?= $att->nama_product ?>" >Delete</button>
+                            </div>
                             </td>
                           </tr> 
                       <?php endforeach; ?>

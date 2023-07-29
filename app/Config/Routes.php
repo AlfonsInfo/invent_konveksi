@@ -62,9 +62,11 @@ $routes->post('/brands/update', 'Brands::update'); //*Update
 $routes->delete('/delete/brands/(:any)', 'Brands::delete/$1'); //*Delete
 
 //*Products
+$routes->get('/products/createpage', 'Products::createPage'); //*Create
 $routes->post('/products/create', 'Products::create'); //*Create
 $routes->get('/products', 'Products::index'); //*Read
-$routes->post('/products/update', 'Products::update'); //*Update
+$routes->get('/products/editpage/(:num)', 'Products::editPage/$1'); //*Update
+$routes->post('/products/update', 'Products::update/$1'); //*Update
 $routes->delete('/delete/products/(:any)', 'Products::delete/$1'); //*Delete
 
 

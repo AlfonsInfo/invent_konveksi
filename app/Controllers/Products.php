@@ -3,6 +3,9 @@
 namespace App\Controllers;
 
 use App\Models\ProductsModel;
+use App\Models\AttributeDetailsModel;
+use App\Models\ProductCategoryModel;
+use App\Models\BrandsModel;
 use CodeIgniter\API\ResponseTrait;
 
 class Products extends BaseController
@@ -59,12 +62,66 @@ class Products extends BaseController
         //*Create Page
         public function createPage()
         {
+            //* Attribute values
+            $AttributeDetailsModel = new AttributeDetailsModel();
+            $warna = $AttributeDetailsModel->where('id_attribute',37)->findAll(); 
+            $ukuran = $AttributeDetailsModel->where('id_attribute',38)->findAll();
+            
+            //* Brand
+            $Brands = new BrandsModel();
+            $Brands= $Brands->findAll(); 
+            
+        //* Kategori
+            $Kategori = new ProductCategoryModel();
+            $Kategori= $Kategori->findAll(); 
+
             $data = [
-                'title' => 'Form | Tambah Attribut',
-                'pageTitle' => 'Create Attributes',
-    
+                'title' => 'Form | Tambah Produk',
+                'pageTitle' => 'Create Pages',
+                'warna' => $warna,
+                'ukuran' => $ukuran,
+                'brands' => $Brands,
+                'kategori' => $Kategori,
+                'validation' => \config\Services::validation()
             ];
     
+            return view('Products/ProductsCreatePage.php', $data );
+
+        }
+        //*Create Page
+        public function editPage($id)
+        {
+            // dd($id);
+
+            $productToUpdate = $this->productsModel->find($id);
+            $gambarBase64Default =  'data:image/jpeg;base64,' .base64_encode($productToUpdate['foto_product']);
+            //* Attribute values
+            $AttributeDetailsModel = new AttributeDetailsModel();
+            $warna = $AttributeDetailsModel->where('id_attribute',37)->findAll(); 
+            $ukuran = $AttributeDetailsModel->where('id_attribute',38)->findAll();
+            
+            //* Brand
+            $Brands = new BrandsModel();
+            $Brands= $Brands->findAll(); 
+            
+            //* Kategori
+            $Kategori = new ProductCategoryModel();
+            $Kategori= $Kategori->findAll(); 
+
+            $data = [
+                'title' => 'Form | Edit Produk',
+                'pageTitle' => 'Update Product',
+                'warna' => $warna,
+                'ukuran' => $ukuran,
+                'brands' => $Brands,
+                'kategori' => $Kategori,
+                'product' => $productToUpdate,
+                'gambardefault'=> $gambarBase64Default,
+                'validation' => \config\Services::validation()
+            ];
+    
+            return view('Products/ProductsEditPage.php', $data );
+
         }
 
 
@@ -75,52 +132,44 @@ class Products extends BaseController
     {
         // Ambil semua data dari form
         $data = $this->request->getPost();
-
-        // Atur aturan validasi untuk setiap field
-        $rules = [
-            'nama_category' => 'required|max_length[100]|is_unique[attributes.nama_attribute]', // Contoh aturan validasi: wajib diisi dan maksimal 100 karakter
-        ];
-
-        // Atur pesan error kustom (opsional)
-        $errors = [
-            'nama_attribute' => [
-                'required' => 'Nama atribut harus diisi.',
-                'max_length' => 'Nama atribut maksimal 100 karakter.',
-                'is_unique' => 'Attribut harus unik'
-            ],
-        ];
-
-        // Validasi data
-        if (!$this->validate($rules, $errors)) {
-
-            session()->setFlashdata('errors', $this->validator->getErrors());
-            return redirect()->to(base_url() .'attributes');
-        }
-
-        // Jika validasi berhasil, simpan data ke dalam database
+        $gambar = $this->request->getFile('foto_product');
         $this->productsModel->save([
-            'nama_category' => $data['nama_category']
+            'nama_product' => $data['nama_produk'],
+            'harga_product' => $data['harga_produk'],
+            'id_details_warna' => $data['id_details_warna'],
+            'id_details_ukuran' => $data['id_details_ukuran'],
+            'id_brand' => $data['id_brand'],
+            'id_category' => $data['id_category'],
+            'stok_total' => $data['stok_total'],
+            'foto_product' =>file_get_contents($gambar->getTempName()),
         ]);
 
         // Redirect ke halaman atribut dengan pesan sukses
         session()->setFlashdata('success', 'Data berhasil disimpan.');
-        return redirect()->to(base_url() .'productcategory')->with('success', 'Atribut berhasil ditambahkan.');    
+        return redirect()->to(base_url() .'products')->with('success', 'Atribut berhasil ditambahkan.');    
     }
 
     //*Update
     public function update(){
-        $id = $this->request->getPost('id_category');
+        $id = $this->request->getPost('id_product');
+        $data = $this->request->getPost();
         $dataToUpdate = $this->productsModel->find($id);
         if(!$dataToUpdate){
             //redirect to halaman not found
         }
 
         $dataToUpdate = [
-            'nama_category' => $this->request->getPost('nama_category'),
+            'nama_product' => $data['nama_produk'],
+            'harga_product' => $data['harga_produk'],
+            'id_details_warna' => $data['id_details_warna'],
+            'id_details_ukuran' => $data['id_details_ukuran'],
+            'id_brand' => $data['id_brand'],
+            'id_category' => $data['id_category'],
+            'stok_total' => $data['stok_total'],
         ];
         $this->productsModel->update($id, $dataToUpdate);
         session()->setFlashdata('success', 'Data berhasil disimpan.');
-        return redirect()->to(base_url() .'productcategory')->with('success', 'Kategori berhasil diubah.');    
+        return redirect()->to(base_url() .'product')->with('success', 'Kategori berhasil diubah.');    
     }
 
 
