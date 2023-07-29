@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
 <body>
     <h1>Aplikasi Inventory Toko Konveksi</h1>
     <h2>Teknologi Yang digunakan</h2>
