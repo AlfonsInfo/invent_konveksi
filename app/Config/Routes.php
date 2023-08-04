@@ -35,52 +35,62 @@ $routes->set404Override();
 
 $routes->get('/', 'Pages::index');
 $routes->get('/login', 'Pages::Login');
-$routes->get('/dashboard', 'Pages::dashboard',);
+$routes->post('/login/auth', 'Login::auth');
+$routes->get('/logout', 'Login::logout');
+$routes->get('/dashboard', 'Pages::dashboard',['filter' => 'auth']);
 
 //* Users
-$routes->get('/users/register','Register::index');
-$routes->post('/users/save','Register::save');
+$routes->get('/users/register','Register::index',['filter' => 'auth']);
+$routes->post('/users/save','Register::save',['filter' => 'auth']);
 
+// $routes->get('/users/register','Register::index');
+// $routes->post('/users/save','Register::save');
 // ['filter' => 'auth']
 //* Attributes
-$routes->post('/attributes/create', 'Attributes::create'); //*Create
-$routes->get('/attributes', 'Attributes::index'); //*Read
-$routes->post('/attributes/update','Attributes::update'); //*Update
-$routes->delete('/delete/attributes/(:any)', 'Attributes::deleteAttribute/$1'); //*Delete
+$routes->post('/attributes/create', 'Attributes::create',['filter' => 'auth']); //*Create
+$routes->get('/attributes', 'Attributes::index',['filter' => 'auth']); //*Read
+$routes->post('/attributes/update','Attributes::update',['filter' => 'auth']); //*Update
+$routes->delete('/delete/attributes/(:any)', 'Attributes::deleteAttribute/$1',['filter' => 'auth']); //*Delete
 
 //* Attributes Details
-$routes->post('/attributedetails/create','AttributeDetails::create'); //* Create
-$routes->get('/attributedetails/(:num)', 'AttributeDetails::index/$1'); //* Read
-$routes->post('/attributedetails/update','AttributeDetails::update'); //*Update
-$routes->delete('/delete/attributedetails/(:any)', 'AttributeDetails::deleteAttribute/$1'); //*Delete
+$routes->post('/attributedetails/create','AttributeDetails::create',['filter' => 'auth']); //* Create
+$routes->get('/attributedetails/(:num)', 'AttributeDetails::index/$1',['filter' => 'auth']); //* Read
+$routes->post('/attributedetails/update','AttributeDetails::update',['filter' => 'auth']); //*Update
+$routes->delete('/delete/attributedetails/(:any)', 'AttributeDetails::deleteAttribute/$1',['filter' => 'auth']); //*Delete
 
 //* Product Category
-$routes->post('/productcategory/create', 'ProductCategory::create'); //*Create
-$routes->get('/productcategory', 'ProductCategory::index'); //*Read
-$routes->post('/productcategory/update', 'ProductCategory::update'); //*Update
-$routes->delete('/delete/productcategory/(:any)', 'ProductCategory::delete/$1'); //*Delete
+$routes->post('/productcategory/create', 'ProductCategory::create',['filter' => 'auth']); //*Create
+$routes->get('/productcategory', 'ProductCategory::index',['filter' => 'auth']); //*Read
+$routes->post('/productcategory/update', 'ProductCategory::update',['filter' => 'auth']); //*Update
+$routes->delete('/delete/productcategory/(:any)', 'ProductCategory::delete/$1',['filter' => 'auth']); //*Delete
 
 //* Brands
-$routes->post('/brands/create', 'Brands::create'); //*Create
-$routes->get('/brands', 'Brands::index'); //*Read
-$routes->post('/brands/update', 'Brands::update'); //*Update
-$routes->delete('/delete/brands/(:any)', 'Brands::delete/$1'); //*Delete
+$routes->post('/brands/create', 'Brands::create',['filter' => 'auth']); //*Create
+$routes->get('/brands', 'Brands::index',['filter' => 'auth']); //*Read
+$routes->post('/brands/update', 'Brands::update',['filter' => 'auth']); //*Update
+$routes->delete('/delete/brands/(:any)', 'Brands::delete/$1',['filter' => 'auth']); //*Delete
 
 //*Products
-$routes->get('/products/createpage', 'Products::createPage'); //*Create
-$routes->post('/products/create', 'Products::create'); //*Create
-$routes->get('/products', 'Products::index'); //*Read
-$routes->get('/products/editpage/(:num)', 'Products::editPage/$1'); //*Update
-$routes->post('/products/update', 'Products::update/$1'); //*Update
-$routes->delete('/delete/products/(:any)', 'Products::delete/$1'); //*Delete
+$routes->get('/products/createpage', 'Products::createPage',['filter' => 'auth']); //*Create
+$routes->post('/products/create', 'Products::create',['filter' => 'auth']); //*Create
+$routes->get('/products', 'Products::index',['filter' => 'auth']); //*Read
+$routes->get('/products/editpage/(:num)', 'Products::editPage/$1',['filter' => 'auth']); //*Update
+$routes->post('/products/update', 'Products::update/$1',['filter' => 'auth']); //*Update
+$routes->delete('/delete/products/(:any)', 'Products::delete/$1',['filter' => 'auth']); //*Delete
 
+//*Transactions
+$routes->get('/transactions', 'Transactions::index',['filter' => 'auth']); //*Read
+$routes->get('/todaytransactions', 'Transactions::todaytransaction',['filter' => 'auth']); //*Read
+$routes->get('/todaytransactions/(:num)', 'Transactions::todaytransactiondetails/$1',['filter' => 'auth']); //*Read
+$routes->post('/transactions/addToCart', 'Transactions::addToCart',['filter' => 'auth']); //*Add To Cart
+$routes->post('transactions/checkout', 'Transactions::checkout'); //* proses checkout
 
 //*Profile Views
-$routes->get('/profile', 'Pages::profile');
+$routes->get('/profile', 'Pages::profile',['filter' => 'auth']);
 
 
 //*User
-$routes->get('/users', 'Pages::user');
+$routes->get('/users', 'Pages::user',['filter' => 'auth']);
 
 
 

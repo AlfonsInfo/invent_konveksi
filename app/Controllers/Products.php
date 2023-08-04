@@ -41,11 +41,11 @@ class Products extends BaseController
         $products = $query->getResult();
         $rupiahFormatter = new \App\Controllers\RupiahFormatter();
         
-        foreach($products as $p)
-        {
-            $p->foto_product = 'data:image/jpeg;base64,' . base64_encode($p->foto_product);
-            $p->harga_product = $rupiahFormatter->formatRupiah($p->harga_product);
-        }
+            foreach($products as $p)
+            {
+                $p->foto_product = 'data:image/jpeg;base64,' . base64_encode($p->foto_product);
+                $p->harga_product = $rupiahFormatter->formatRupiah($p->harga_product);
+            }
 
         $data = [
             'title' => 'Produk',

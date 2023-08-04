@@ -11,6 +11,21 @@
   });
 
 
+    //* Data Table Attributes
+    $('#example3').DataTable({
+        "paging": true,
+        "pageLength" : 2,
+        "search" : true,
+        "lengthChange": false,
+        "search": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    
+
+
   //* Delete Attributes
   // Menangani peristiwa klik tombol Delete
   document.addEventListener("click", function (e) {

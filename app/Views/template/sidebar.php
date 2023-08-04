@@ -1,5 +1,6 @@
 
-  <!-- Main Sidebar Container -->
+<?php //dd(session()->get('count')) ?>
+<!-- Main Sidebar Container -->
   <aside  style="position: fixed; height: 100vh;" class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/dashboard" class="brand-link">
@@ -12,10 +13,11 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <!-- <img src="/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> -->
+          <img src="<?php echo session()->get('foto_user');?>" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="/profile" class="d-block">Username</a>
+          <a href="/profile" class="d-block"><?= session()->get('username')?></a>
         </div>
       </div>
 
@@ -35,15 +37,19 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-header">MENU</li>
+          <?php if(session()->get('id_role') == 1) : ?>
           <li class="nav-item">
             <a href="/users" class="nav-link <?php if(uri_string() == 'users') echo 'active'?>">
               <i class="nav-icon fas fa-user-alt"></i>
               <p>
                 Users
-                <span class="badge badge-info right">2</span>
+                <span class="badge badge-info right"><?= session()->get('count')?> user</span>
               </p>
             </a>
           </li>
+          <?php endif ?>
+          
+          <?php if(session()->get('id_role') == 1 || session()->get('id_role') == 2) : ?>
           <li class="nav-item">
             <a href="/attributes" class="nav-link <?php if(uri_string() == 'attributes') echo 'active'?>">
             <i class="nav-icon fas fa-list-ul"></i>
@@ -88,11 +94,37 @@
               </p>
             </a>
           </li>
+          <?php endif ?>
+          <?php if(session()->get('id_role') == 3 ) : ?>
+            <li class="nav-item menu-open">
+              <div class="nav-link">
+                <i class="nav-icon fas fa-money-bill"></i>  
+                <p>
+                  Transactions
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </div>
+              <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/transactions" class="nav-link <?php if(uri_string() == 'transactions') echo 'active'?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Transaction</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/todaytransactions" class="nav-link  <?php if(uri_string() == 'todaytransactions') echo 'active'?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Today's Transactions </p>
+                </a>
+              </li>
+            </ul>
+            </li>
+            <?php endif ?>
           <li class="nav-item">
-            <a href="transactions" class="nav-link">
-            <i class="nav-icon fas fa-money-bill"></i>  
-              <p>
-                Transactions
+            <a href="/logout" class="nav-link">
+            <i class="nav-icon fa fas fa-sign-out-alt"></i>  
+            <p>
+                Log Out
               </p>
             </a>
           </li>

@@ -21,8 +21,17 @@ class Login extends BaseController
             $verify_pass = password_verify($password, $pass);
             if($verify_pass)
             {
+                $userCount = $model->countAllResults();
+                $data['foto_user'] = 'data:image/jpeg;base64,' .base64_encode($data['foto_user']);
                 $ses_data = [
-
+                    'id_user' => $data['id_user'],
+                    'nama_user' => $data['nama_user'],
+                    'username' => $data['username'],
+                    'status_user' => $data['status_user'],
+                    'foto_user' => $data['foto_user'],
+                    'id_role' => $data['id_role'],
+                    'logged_in' => true,
+                    'count' => $userCount                    
                 ];
                 $session->set($ses_data);
                 return redirect()->to('/dashboard');
@@ -31,7 +40,7 @@ class Login extends BaseController
                 return redirect()->to('/login');
             }
         }else{
-            $session->setFlashdata('msg', 'Email not Found');
+            $session->setFlashdata('msg', 'Username not Found');
             return redirect()->to('/login');
         }
     }
