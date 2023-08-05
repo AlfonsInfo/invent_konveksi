@@ -46,7 +46,7 @@
                             <div>
                                 <a href="/attributedetails/<?= $att['id_attribute'] ?>" class="btn btn-primary  active" role="button" aria-pressed="true">View Details</a>
                                 <button  data-toggle="modal" data-target="#updateModal" class="btn btn-warning  edit-btn active " role="button" aria-pressed="true" data-id-attribut="<?= $att['id_attribute'];?>" data-nama-attribut="<?= $att['nama_attribute'];?>">Edit</button>
-                                <button class="btn btn-danger active delete-btn"data-attribute-id="<?= $att['id_attribute'];?>" role="button" aria-pressed="true"  data-attribute-nama="<?= $att['nama_attribute']?>" >Delete</button>
+                                <!-- <button class="btn btn-danger active delete-btn"data-attribute-id="<?= $att['id_attribute'];?>" role="button" aria-pressed="true"  data-attribute-nama="<?= $att['nama_attribute']?>" >Delete</button> -->
                                 <!-- <button>Hapus</button> -->
                               </div>
                             </td>

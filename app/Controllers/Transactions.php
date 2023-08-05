@@ -184,6 +184,28 @@ class Transactions extends BaseController
         }
     }
 
+    public function insertLogSell(array $data)
+    {
+        //* User
+        $currentUser =  session()->get('id_user');
+        //* Date Log
+        $date = date('Y-m-d H:i:s');
+        //* Model Log
+        $LogsModel = new \App\Models\LogsModel();
+
+        
+        $logData = [
+            'id_product' => $data[0], // ID produk yang dihapus
+            'log_action' => 'out', // atau sesuai yang Anda butuhkan untuk menandakan log hapus produk
+            'quantity' => $data[1],
+            'date' => $date,
+            'id_user' => $currentUser,
+            'deskripsi' => 'terjual' 
+        ];
+
+        $LogsModel->insert($logData);
+    }
+
     public function checkOut()
     {
         try{
@@ -228,6 +250,7 @@ class Transactions extends BaseController
             foreach($detailToInsert as $d)
             {
                 self::updateProductStock($d['id_produk'],$d['jumlah']);
+                self::insertLogSell([$d['id_produk'],$d['jumlah']]);
             }
             
             session()->remove('cart');

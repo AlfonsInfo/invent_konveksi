@@ -47,6 +47,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="/logs" class="nav-link <?php if(uri_string() == 'logs') echo 'active'?>">
+              <i class="nav-icon fas fa-clock"></i>
+              <p>
+                Monitor Logs
+              </p>
+            </a>
+          </li>
           <?php endif ?>
           
           <?php if(session()->get('id_role') == 1 || session()->get('id_role') == 2) : ?>

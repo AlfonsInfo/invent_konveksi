@@ -29,13 +29,14 @@ class Products extends BaseController
 
         $db = db_connect();
 
-        $query = $db->query("SELECT p.id_product, p.nama_product, p.harga_product, p.deskripsi, p.foto_product, p.stok_total, c.nama_category, b.nama_brand
+        $query = $db->query("SELECT p.id_product, p.nama_product, p.harga_product, p.foto_product, p.stok_total, c.nama_category, b.nama_brand
                             , ad_warna.nilai as warna , ad_ukuran.nilai as ukuran
                             FROM products p
                             LEFT JOIN product_category c ON p.id_category = c.id_category
                             LEFT JOIN brands b on p.id_brand = b.id_brand
                             LEFT JOIN attribute_details ad_warna on p.id_details_warna = ad_warna.id_details
                             LEFT JOIN attribute_details ad_ukuran on p.id_details_ukuran = ad_ukuran.id_details
+                            WHERE p.deleted_at  IS NULL
                             ");
 
         $products = $query->getResult();
@@ -168,19 +169,75 @@ class Products extends BaseController
             'stok_total' => $data['stok_total'],
         ];
         $this->productsModel->update($id, $dataToUpdate);
+        //* Logging
+        //* Data for logs
+        $dataForLogs =
+        [
+            'id_product' => $id,
+            'tipe' => 'update',
+            'jumlah' =>  $data['stok_total']
+        ];
+        //* Insert
+        self::updateStokLog($dataForLogs);
+        
         session()->setFlashdata('success', 'Data berhasil disimpan.');
-        return redirect()->to(base_url() .'product')->with('success', 'Kategori berhasil diubah.');    
+        return redirect()->to(base_url() .'products')->with('success', 'Kategori berhasil diubah.');    
+    }
+
+
+    public static function updateStokLog(array $data)
+    {
+        //* User
+        $currentUser =  session()->get('id_user');
+        //* Date Log
+        $date = date('Y-m-d H:i:s');
+        //* Model Log
+        $LogsModel = new \App\Models\LogsModel();
+
+        
+        $logData = [
+            'id_product' => $data['id_product'], // ID produk yang dihapus
+            'log_action' => $data['tipe'], // atau sesuai yang Anda butuhkan untuk menandakan log hapus produk
+            'quantity' => $data['jumlah'],
+            'date' => $date,
+            'id_user' => $currentUser,
+            'deskripsi' => (isset($data['alasan'])) ? $data['alasan'] : null 
+        ];
+
+        $LogsModel->insert($logData);
+    }
+    public function updatestok()
+    {
+        //* Data yang didapat dari Post
+        $data = $this->request->getPost();
+
+        //*Cari product yang diupdate
+        $product = $this->productsModel->find($data['id_product']);
+        $stock_before = $product['stok_total']; 
+        //* Data to update + atau - ? 
+        ($data['tipe'] === "out") ? 
+        $dataToUpdate = ['stok_total' => (int)$stock_before - (int)$data['jumlah']] : $dataToUpdate =  ['stok_total' => (int)$stock_before + (int)$data['jumlah']];
+        // * Update Stok
+        $this->productsModel->update($data['id_product'],$dataToUpdate);
+        //* Logs
+        self::updateStokLog($data);
+
+        session()->setFlashdata('success', 'Perubahan berhasil disimpan.');
+        return redirect()->to(base_url() .'products')->with('success', 'Perubahan berhasil dilakukan.');    
+
     }
 
 
     //*Delete
     public function delete($id)
     {
+        // dd(session()->get('id_user'));
         // Cek apakah atribut dengan ID tersebut ada
-        $attribute = $this->productsModel->find($id);
-        if (!$attribute) {
+        $products = $this->productsModel->find($id);
+        if (!$products) {
             // return $this->('Atribut tidak ditemukan.');
         }
+
         // Jika ada, lakukan proses penghapusan
         try {
             $this->productsModel->delete($id);
@@ -188,6 +245,19 @@ class Products extends BaseController
                 'status' => 'success',
                 'message' => 'Data berhasil dihapus.'
             ];
+            
+            //     dd($data);
+            
+            $currentUser =  session()->get('id_user');
+            $date = date('Y-m-d H:i:s');
+            $LogsModel = new \App\Models\LogsModel();
+            $logData = [
+                'id_product' => $products['id_product'], // ID produk yang dihapus
+                'log_action' => 'delete', // atau sesuai yang Anda butuhkan untuk menandakan log hapus produk
+                'date' => $date,
+                'id_user' => $currentUser
+            ];
+            $LogsModel->insert($logData);
             return $this->respond($response);
         } catch (\Exception $e) {
             $response = [

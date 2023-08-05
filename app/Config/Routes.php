@@ -76,6 +76,7 @@ $routes->post('/products/create', 'Products::create',['filter' => 'auth']); //*C
 $routes->get('/products', 'Products::index',['filter' => 'auth']); //*Read
 $routes->get('/products/editpage/(:num)', 'Products::editPage/$1',['filter' => 'auth']); //*Update
 $routes->post('/products/update', 'Products::update/$1',['filter' => 'auth']); //*Update
+$routes->post('/products/updatestok', 'Products::updatestok/$1',['filter' => 'auth']); //*Update
 $routes->delete('/delete/products/(:any)', 'Products::delete/$1',['filter' => 'auth']); //*Delete
 
 //*Transactions
@@ -91,6 +92,10 @@ $routes->get('/profile', 'Pages::profile',['filter' => 'auth']);
 
 //*User
 $routes->get('/users', 'Pages::user',['filter' => 'auth']);
+
+
+//* Logs
+$routes->get('/logs', 'Logs::index',['filter' => 'auth']); //*Read
 
 
 

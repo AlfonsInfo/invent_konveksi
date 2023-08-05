@@ -65,18 +65,22 @@
                             <div>
                                 <?= $att->stok_total; ?>
                             </div>
-                                <button class="btn btn-primary">
+                                <button  data-product-id="<?= $att->id_product;?>" class="btn btn-primary adding-btn">
                                     <i class="fas fa-plus"></i>
                                 </button>
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-minus"></i>
+                                <!-- Add the 'minus-btn' class to the button element -->
+                                <button data-product-id="<?= $att->id_product; ?>" class="btn btn-primary minus-btn">
+                                    <!-- Wrap the icon with a span element and add the 'minus-icon' class -->
+                                    <span data-product-id="<?= $att->id_product; ?>" class="minus-icon">
+                                        <i class="fas fa-minus"></i>
+                                    </span>
                                 </button>
                         </td>
                         <td>
                             <div>
-                            <a href="products/editpage/<?= $att->id_product;?>"   class="btn btn-warning  edit-btn active " role="button"   >Edit</a>
-                            <button class="btn btn-danger active delete-btn"data-product-id="<?= $att->id_product;?>" role="button" aria-pressed="true"  data-attribute-nama="<?= $att->nama_product ?>" >Delete</button>
-                            </div>
+                            <a href="products/editpage/<?= $att->id_product;?>"   class="btn btn-warning   " role="button"   >Edit</a>
+                            <button class="btn btn-danger active delete-btn-product" data-product-id="<?= $att->id_product;?>" role="button" aria-pressed="true"  data-attribute-nama="<?= $att->nama_product ?>" >Delete</button>
+                          </div>
                             </td>
                           </tr> 
                       <?php endforeach; ?>
@@ -100,58 +104,61 @@
     <!-- /.content -->
   </div>
 
-<!-- //* Create Modal -->
-<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- //* Adding -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Create Kategori</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Tambah Stok</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body ">
-        <form class="needs-validation" novalidate method="post" action="/productcategory/create">
+        <form class="needs-validation" novalidate method="post" action="/products/updatestok">
           <?= csrf_field(); ?>
           <div class="form-group">
-            <label for="nama_category" class="col-form-label">Nama Kategori</label>
-            <input type="text" class="form-control <?= ($validation->hasError('nama_category')) ? 'is-invalid' : '' ?>" id="nama_category" name="nama_category" autofocus>
-            <div class="invalid-feedback">
-              <?= $validation->getError('nama_category') ?>
-            </div>
+            <label for="nama_category" class="col-form-label">Tambah</label>
+            <input  type="hidden" class="form-control" id="id_product_add" name="id_product">
+            <input  type="hidden" class="form-control"  name="tipe" value="in">
+            <input type="number" class="form-control" id="jumlah_tambah" name="jumlah" autofocus>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Tambah Kategori</button>
+          <button type="submit" class="btn btn-primary">Konfirmasi</button>
         </div>
       </form>
     </div>
   </div>
 </div>
-
-<!-- //* Update Modal -->
-<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- //* Kurang-->
+<div class="modal fade" id="substractModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel"><?= 'Update Category' ?></h5>
+        <h5 class="modal-title" id="exampleModalLabel">Kurangi Stok</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <form class="needs-validation" novalidate method="post" action="/productcategory/update">
-          <?php csrf_field() ?>
+      <div class="modal-body ">
+        <form class="needs-validation" novalidate method="post" action="/products/updatestok">
+          <?= csrf_field(); ?>
           <div class="form-group">
-            <label for="nama-attribut" class="col-form-label">Nama Kategori</label>
-            <input  type="hidden" class="form-control" id="edit-id-attribut" name="id_category">
-            <input  type="text" class="form-control" id="edit-nama-attribut" name="nama_category">
+            <label for="jumlah_tambah" class="col-form-label">Kurangi</label>
+            <input  type="hidden" class="form-control" id="id_product_minus" name="id_product">
+            <input  type="hidden" class="form-control"  name="tipe" value="out">
+            <input type="number" class="form-control" id="jumlah_tambah" name="jumlah" autofocus>
+          </div>
+          <div class="form-group">
+            <label for="alasan" class="col-form-label">Alasan Pengurangan Stok</label>
+            <input type="text" class="form-control" id="alasan" name="alasan" autofocus>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Saved Changed</button>
+          <button type="submit" class="btn btn-primary">Konfirmasi</button>
         </div>
       </form>
     </div>
@@ -159,6 +166,39 @@
 </div>
 
 <script>
+  document.addEventListener("click", function (e) {
+      // Assuming you have already added the event listener for the "minus-btn" elements
+      if (e.target && (e.target.classList.contains("adding-btn") || e.target.closest(".adding-btn"))) {
+                e.preventDefault();
+                const idProduct = e.target.getAttribute("data-product-id") || e.target.closest(".adding-btn").getAttribute("data-product-id");
+
+                // Add an event listener for the "shown.bs.modal" event
+                $('#addModal').on('shown.bs.modal', function () {
+                    // Memasukkan nilai data ke dalam input di dalam modal
+                    document.getElementById("id_product_add").value = idProduct;
+                    console.log(idProduct);
+                });
+
+                // Tampilkan modal
+                $('#addModal').modal('show');
+            }
+  // Assuming you have already added the event listener for the "minus-btn" elements
+        if (e.target && (e.target.classList.contains("minus-btn") || e.target.closest(".minus-btn"))) {
+            e.preventDefault();
+            const idProduct = e.target.getAttribute("data-product-id") || e.target.closest(".minus-btn").getAttribute("data-product-id");
+
+            // Add an event listener for the "shown.bs.modal" event
+            $('#substractModal').on('shown.bs.modal', function () {
+                // Memasukkan nilai data ke dalam input di dalam modal
+                document.getElementById("id_product_minus").value = idProduct;
+                console.log(idProduct);
+            });
+
+            // Tampilkan modal
+            $('#substractModal').modal('show');
+        }
+  });
+
 </script>
 
 
