@@ -34,7 +34,7 @@ class Transactions extends BaseController
 
         $db = db_connect();
 
-        $query = $db->query("SELECT p.id_product, p.nama_product, p.harga_product, p.deskripsi, p.foto_product, p.stok_total, c.nama_category, b.nama_brand
+        $query = $db->query("SELECT p.id_product, p.nama_product, p.harga_product,  p.foto_product, p.stok_total, c.nama_category, b.nama_brand
                             , ad_warna.nilai as warna , ad_ukuran.nilai as ukuran
                             FROM products p
                             LEFT JOIN product_category c ON p.id_category = c.id_category

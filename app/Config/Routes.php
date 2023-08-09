@@ -98,6 +98,10 @@ $routes->get('/users', 'Pages::user',['filter' => 'auth']);
 $routes->get('/logs', 'Logs::index',['filter' => 'auth']); //*Read
 
 
+//* Reports
+$routes->get('/reports', 'Reports::index',['filter' => 'auth']); //*Read
+
+
 
 
 

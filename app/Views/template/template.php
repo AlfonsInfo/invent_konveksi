@@ -51,6 +51,7 @@
 <script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script src="/plugins/sweetalert2/sweetalert2.js"></script>
 <script src="/script.js"></script>
+<script></script>
 </body>
 
 </html>
